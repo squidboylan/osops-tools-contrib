@@ -3,7 +3,7 @@
   shell: >
     wp core install --path=/var/www/html
     --url="http://{{ hostvars.cloud.balancer.openstack.public_v4 }}"
-    --title='OpenStack Interop Challenge'
+    --title="{{ app_env.wp_title }}"
     --admin_user=wpuser
     --admin_password="{{ db_pass }}"
     --admin_email='interop@openstack.org'
@@ -13,7 +13,7 @@
   shell: >
     wp core install --path=/var/www/html
     --url="http://{{ hostvars.cloud.balancer.openstack.private_v4 }}"
-    --title='OpenStack Interop Challenge'
+    --title="{{ app_env.wp_title }}"
     --admin_user=wpuser
     --admin_password="{{ db_pass }}"
     --admin_email='interop@openstack.org'
@@ -36,19 +36,3 @@
     plugin install /tmp/wordpress-importer.zip --activate
   args:
     warn: no
-
-- name: Download wordpress sample posts
-  get_url:
-    url: "{{ app_env.wp_posts }}"
-    dest: /tmp/wpposts.zip
-    force: yes
-
-- name: Unpack the post
-  shell: unzip -o -q /tmp/wpposts.zip -d /tmp/posts
-  args:
-    warn: no
-
-- name: Import wordpress posts
-  shell: >
-    sudo -u www-data wp --path=/var/www/html
-    import /tmp/posts/*.xml --authors=create --quiet
