@@ -18,23 +18,23 @@
 
 - name: Creates share directory for wpcontent
   file:
-    path: /var/www/html/wp-content/uploads
+    path: /var/www/html
     state: directory
     owner: www-data
     group: www-data
 
 - name: Mount the directory using private IP
   mount:
-    name: /var/www/html/wp-content/uploads
-    src: "{{ hostvars.cloud.database.openstack.private_v4 }}:/storage/wpcontent"
+    name: /var/www/html
+    src: "{{ hostvars.cloud.database.openstack.private_v4 }}:/storage/wordpress"
     state: mounted
     fstype: nfs
   when: hostvars.cloud.database.openstack.private_v4 != ""
 
 - name: Mount the directory using public IP
   mount:
-    name: /var/www/html/wp-content/uploads
-    src: "{{ hostvars.cloud.database.openstack.public_v4 }}:/storage/wpcontent"
+    name: /var/www/html
+    src: "{{ hostvars.cloud.database.openstack.public_v4 }}:/storage/wordpress"
     state: mounted
     fstype: nfs
   when: hostvars.cloud.database.openstack.private_v4 == ""

@@ -30,7 +30,7 @@
   file: path=/storage/sqldatabase state=directory
 
 - name: Creates share directory for wpcontent
-  file: path=/storage/wpcontent state=directory
+  file: path=/storage/wordpress state=directory
 
 - name: Creates directory for database mounting point
   file: path=/var/lib/mysql state=directory
@@ -46,7 +46,7 @@
 - name: Setup NFS webserver access
   lineinfile:
     dest: /etc/exports
-    line: "/storage/wpcontent {{ item[0].openstack[item[1]] }}/32(rw,sync,no_root_squash,no_subtree_check)"
+    line: "/storage/wordpress {{ item[0].openstack[item[1]] }}/32(rw,sync,no_root_squash,no_subtree_check)"
   with_nested:
     - "{{ hostvars.cloud.webserver.results }}"
     - ["private_v4", "public_v4"]

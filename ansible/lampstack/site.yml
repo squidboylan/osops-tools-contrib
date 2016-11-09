@@ -41,7 +41,7 @@
   environment: "{{proxy_env}}"
 
 - name: install wordpress
-  hosts: wps
+  hosts: wps[0]
   user: "{{ app_env.ssh_user }}"
   vars_files:
     - "vars/{{ env }}.yml"
